@@ -2,14 +2,12 @@ package com.upc.oss.monitoreo.entities;
 
 import com.upc.oss.monitoreo.enums.SalesObjectiveStatus;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
 
+@Builder
 @Entity
 @Table(name = "objetivo_venta")
 @Getter

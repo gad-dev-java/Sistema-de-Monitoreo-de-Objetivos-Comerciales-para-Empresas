@@ -1,15 +1,13 @@
 package com.upc.oss.monitoreo.entities;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 
+@Builder
 @Entity
 @Table(name = "venta")
 @Getter
@@ -30,7 +28,7 @@ public class Sale {
     private LocalDate saleDate;
 
     @Column(name = "monto", nullable = false)
-    private BigDecimal monto;
+    private BigDecimal amount;
 
     @Column(name = "descripcion")
     private String description;

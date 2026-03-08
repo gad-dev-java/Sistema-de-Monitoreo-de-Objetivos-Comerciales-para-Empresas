@@ -1,13 +1,11 @@
 package com.upc.oss.monitoreo.entities;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import java.time.LocalDate;
 
+@Builder
 @Entity
 @Table(name = "notificacion")
 @Getter

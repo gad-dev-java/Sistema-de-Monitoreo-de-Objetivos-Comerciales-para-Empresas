@@ -1,11 +1,9 @@
 package com.upc.oss.monitoreo.entities;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
+@Builder
 @Entity
 @Table(name = "usuario")
 @Getter
@@ -16,7 +14,7 @@ public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id_usuario")
-    private Long idUsuario;
+    private Long idUser;
 
     @Column(name = "nombre", nullable = false)
     private String name;
@@ -31,6 +29,6 @@ public class User {
     private String role;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "id_company")
+    @JoinColumn(name = "id_empresa")
     private Company company;
 }

@@ -1,0 +1,22 @@
+services:
+  postgres:
+    image: postgres:17-alpine
+    container_name: postgres-oss
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: gad-dev
+      POSTGRES_PASSWORD: 123456789
+      POSTGRES_DB: business-objectives
+    ports:
+      - "5432:5432"
+    volumes:
+      - ./infra/postgres/init-scripts:/docker-entrypoint-initdb.d
+      - postgres_data_oss:/var/lib/postgresql/data
+    networks:
+      - oss-network
+networks:
+  oss-network:
+    driver: bridge
+
+volumes:
+  postgres_data_oss:

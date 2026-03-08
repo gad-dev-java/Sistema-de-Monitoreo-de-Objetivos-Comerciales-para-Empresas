@@ -4,8 +4,8 @@ import com.upc.oss.monitoreo.dto.CompanyDto;
 import com.upc.oss.monitoreo.dto.request.CreateCompanyRequest;
 import com.upc.oss.monitoreo.dto.request.UpdateCompanyRequest;
 import com.upc.oss.monitoreo.entities.Company;
-import com.upc.oss.monitoreo.exception.CompanyAlreadyExists;
-import com.upc.oss.monitoreo.exception.CompanyNotFound;
+import com.upc.oss.monitoreo.exception.CompanyAlreadyExistsException;
+import com.upc.oss.monitoreo.exception.CompanyNotFoundException;
 import com.upc.oss.monitoreo.repository.CompanyRepository;
 import com.upc.oss.monitoreo.service.CompanyService;
 import lombok.RequiredArgsConstructor;
@@ -19,7 +19,7 @@ public class CompanyServiceImpl implements CompanyService {
     @Override
     public CompanyDto createCompany(CreateCompanyRequest companyRequest) {
         if (companyRepository.findByRucOrNameIgnoreCase(companyRequest.ruc(), companyRequest.name()).isPresent()) {
-            throw new CompanyAlreadyExists("Company already exists");
+            throw new CompanyAlreadyExistsException("Company already exists");
         }
         Company companyToCreate = Company.builder()
                 .name(companyRequest.name())
@@ -40,7 +40,7 @@ public class CompanyServiceImpl implements CompanyService {
     @Override
     public CompanyDto updateCompany(UpdateCompanyRequest companyRequest, Long idCompany) {
         Company companySaved = companyRepository.findById(idCompany)
-                .orElseThrow(()-> new CompanyNotFound("Company with id " + idCompany + " not found"));
+                .orElseThrow(()-> new CompanyNotFoundException("Company with id " + idCompany + " not found"));
 
         companySaved.setName(companyRequest.name());
         companySaved.setRuc(companyRequest.ruc());
@@ -48,17 +48,19 @@ public class CompanyServiceImpl implements CompanyService {
         Company companyUpdated = companyRepository.save(companySaved);
 
         return CompanyDto.builder()
-                .idCompany(companySaved.getIdCompany())
-                .name(companySaved.getName())
-                .ruc(companySaved.getRuc())
-                .status(companySaved.getStatus())
-                .createdAt(companySaved.getCreatedAt())
+                .idCompany(companyUpdated.getIdCompany())
+                .name(companyUpdated.getName())
+                .ruc(companyUpdated.getRuc())
+                .status(companyUpdated.getStatus())
+                .createdAt(companyUpdated.getCreatedAt())
                 .build();
     }
 
     @Override
     public void deleteCompany(Long idCompany) {
         Company companySaved = companyRepository.findById(idCompany)
-                .orElseThrow(()-> new CompanyNotFound("Company with id " + idCompany + " not found"));
+                .orElseThrow(()-> new CompanyNotFoundException("Company with id " + idCompany + " not found"));
+        companySaved.setStatus(false);
+        companyRepository.save(companySaved);
     }
 }
