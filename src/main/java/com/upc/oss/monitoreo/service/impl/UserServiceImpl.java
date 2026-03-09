@@ -10,6 +10,9 @@ import com.upc.oss.monitoreo.repository.CompanyRepository;
 import com.upc.oss.monitoreo.repository.UserRepository;
 import com.upc.oss.monitoreo.service.UserService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -17,6 +20,7 @@ import org.springframework.stereotype.Service;
 public class UserServiceImpl implements UserService {
     private final UserRepository userRepository;
     private final CompanyRepository companyRepository;
+    private final PasswordEncoder passwordEncoder;
 
     @Override
     public UserDto createUser(CreateUserRequest request) {
@@ -29,9 +33,9 @@ public class UserServiceImpl implements UserService {
         }
 
         User userToSave = User.builder()
-                .name(request.email())
+                .name(request.name())
                 .email(request.email())
-                .password(request.password())
+                .password(passwordEncoder.encode(request.password()))
                 .role(request.role())
                 .company(companyFound)
                 .build();
