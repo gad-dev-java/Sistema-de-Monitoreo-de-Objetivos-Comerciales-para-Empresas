@@ -2,9 +2,13 @@ package com.upc.oss.monitoreo.entities;
 
 import jakarta.persistence.*;
 import lombok.*;
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.LastModifiedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import java.time.LocalDate;
 
+@EntityListeners(AuditingEntityListener.class)
 @Builder
 @Entity
 @Table(name = "empresa")
@@ -25,11 +29,13 @@ public class Company {
     private String ruc;
 
     @Column(name = "estado")
-    private Boolean status = true;
+    private Boolean status;
 
-    @Column(name = "fecha_registro", updatable = false)
+    @CreatedDate
+    @Column(name = "fecha_registro", updatable = false, nullable = false)
     private LocalDate createdAt;
 
+    @LastModifiedDate
     @Column(name = "ultima_actualizacion")
     private LocalDate updatedAt;
 }

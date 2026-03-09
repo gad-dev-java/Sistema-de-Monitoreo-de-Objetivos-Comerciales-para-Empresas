@@ -5,6 +5,7 @@ import com.upc.oss.monitoreo.dto.request.CreateUserRequest;
 import com.upc.oss.monitoreo.entities.Company;
 import com.upc.oss.monitoreo.entities.User;
 import com.upc.oss.monitoreo.exception.CompanyNotFoundException;
+import com.upc.oss.monitoreo.exception.RoleInvalidException;
 import com.upc.oss.monitoreo.repository.CompanyRepository;
 import com.upc.oss.monitoreo.repository.UserRepository;
 import com.upc.oss.monitoreo.service.UserService;
@@ -22,11 +23,16 @@ public class UserServiceImpl implements UserService {
         Company companyFound = companyRepository.findByNameIgnoreCase(request.companyName())
                 .orElseThrow(() -> new CompanyNotFoundException("Company not found with name " + request.companyName()));
 
+        String role = request.role().toUpperCase();
+        if (!role.equals("ADMIN") && !role.equals("SUPERVISOR")) {
+            throw new RoleInvalidException("Invalid role. Must be ADMIN or SUPERVISOR");
+        }
+
         User userToSave = User.builder()
                 .name(request.email())
                 .email(request.email())
                 .password(request.password())
-                .role("USER")
+                .role(request.role())
                 .company(companyFound)
                 .build();
 

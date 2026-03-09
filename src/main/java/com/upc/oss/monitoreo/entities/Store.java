@@ -28,7 +28,7 @@ public class Store {
     private String city;
 
     @Column(name = "estado")
-    private Boolean status = true;
+    private Boolean status;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "id_empresa", nullable = false)

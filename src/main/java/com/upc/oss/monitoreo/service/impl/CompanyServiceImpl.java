@@ -24,6 +24,7 @@ public class CompanyServiceImpl implements CompanyService {
         Company companyToCreate = Company.builder()
                 .name(companyRequest.name())
                 .ruc(companyRequest.ruc())
+                .status(true)
                 .build();
 
         Company companyCreated = companyRepository.save(companyToCreate);

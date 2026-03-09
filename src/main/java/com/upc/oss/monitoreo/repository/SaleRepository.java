@@ -14,7 +14,7 @@ public interface SaleRepository extends JpaRepository<Sale, Long> {
             SELECT COALESCE(SUM(s.amount), 0)
             FROM Sale s
             WHERE s.store.idStore = :storeId
-            AND s.saleDate BETWEEN :startDate AND :endDate
+            AND s.saleDate BETWEEN :startDate AND :currentDate
             """)
-    BigDecimal sumSalesByStoreAndPeriod(Long storeId, LocalDate startDate, LocalDate endDate);
+    BigDecimal sumSalesByStoreAndPeriod(Long storeId, LocalDate startDate, LocalDate currentDate);
 }

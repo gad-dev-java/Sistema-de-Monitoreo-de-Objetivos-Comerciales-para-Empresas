@@ -24,8 +24,9 @@ public class StoreServiceImpl implements StoreService {
         Company companySaved = companyRepository.findByNameIgnoreCase(request.companyName())
                 .orElseThrow(() -> new CompanyNotFoundException("Company not found with name " + request.name()));
 
-        Store storeToSave = com.upc.oss.monitoreo.entities.Store.builder()
+        Store storeToSave = Store.builder()
                 .name(request.name())
+                .status(true)
                 .address(request.address())
                 .city(request.city())
                 .company(companySaved)
@@ -64,7 +65,7 @@ public class StoreServiceImpl implements StoreService {
                 .name(storeUpdated.getName())
                 .address(storeUpdated.getAddress())
                 .city(storeSaved.getCity())
-                .companyName(storeSaved.getName())
+                .companyName(storeSaved.getCompany().getName())
                 .companyRuc(storeSaved.getCompany().getRuc())
                 .companyStatus(storeSaved.getCompany().getStatus())
                 .build();

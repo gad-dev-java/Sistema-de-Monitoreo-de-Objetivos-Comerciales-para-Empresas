@@ -1,6 +1,7 @@
 package com.upc.oss.monitoreo.service.impl;
 
 import com.upc.oss.monitoreo.entities.SalesObjective;
+import com.upc.oss.monitoreo.enums.SalesObjectiveStatus;
 import com.upc.oss.monitoreo.exception.ObjectiveStoreActiveNotFound;
 import com.upc.oss.monitoreo.repository.SaleRepository;
 import com.upc.oss.monitoreo.repository.SalesObjectiveRepository;
@@ -21,10 +22,10 @@ public class MonitoringServiceImpl implements MonitoringService {
 
     @Override
     public BigDecimal calculatePerformanceCompliance(Long storeId) {
-        SalesObjective objective = salesObjectiveRepository.findActiveObjectiveByStoreId(storeId)
+        SalesObjective objective = salesObjectiveRepository.findActiveObjectiveByStoreId(storeId, SalesObjectiveStatus.ACTIVO)
                 .orElseThrow(() -> new ObjectiveStoreActiveNotFound("No active objective found for this store: " + storeId));
 
-        BigDecimal totalSales = saleRepository.sumSalesByStoreAndPeriod(storeId, objective.getStartDate(), objective.getEndDate());
+        BigDecimal totalSales = saleRepository.sumSalesByStoreAndPeriod(storeId, objective.getStartDate(), LocalDate.now());
 
         if (totalSales == null) totalSales = BigDecimal.ZERO;
 
@@ -39,13 +40,13 @@ public class MonitoringServiceImpl implements MonitoringService {
 
     @Override
     public BigDecimal calculateTimeElapsedPercentage(Long storeId) {
-        SalesObjective objective = salesObjectiveRepository.findActiveObjectiveByStoreId(storeId)
+        SalesObjective objective = salesObjectiveRepository.findActiveObjectiveByStoreId(storeId, SalesObjectiveStatus.ACTIVO)
                 .orElseThrow(() -> new ObjectiveStoreActiveNotFound("No active objective found for this store: " + storeId));
 
         long totalDays = ChronoUnit.DAYS.between(objective.getStartDate(), objective.getEndDate());
         long elapsedDays = ChronoUnit.DAYS.between(objective.getStartDate(), LocalDate.now());
 
-        if (totalDays <= 0) return BigDecimal.ZERO;
+        if (totalDays <= 0 || elapsedDays < 0) return BigDecimal.ZERO;
 
         BigDecimal elapsed = BigDecimal.valueOf(elapsedDays);
         BigDecimal total = BigDecimal.valueOf(totalDays);

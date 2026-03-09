@@ -4,6 +4,7 @@ import com.upc.oss.monitoreo.dto.SalesObjectiveDto;
 import com.upc.oss.monitoreo.dto.request.CreateSalesObjectiveRequest;
 import com.upc.oss.monitoreo.entities.SalesObjective;
 import com.upc.oss.monitoreo.entities.Store;
+import com.upc.oss.monitoreo.enums.SalesObjectiveStatus;
 import com.upc.oss.monitoreo.exception.StoreNotFoundException;
 import com.upc.oss.monitoreo.repository.SalesObjectiveRepository;
 import com.upc.oss.monitoreo.repository.StoreRepository;
@@ -28,15 +29,22 @@ public class SalesObjectiveServiceImpl implements SalesObjectiveService {
         Store storeSaved = storeRepository.findByNameIgnoreCase(request.nameStore())
                 .orElseThrow(() -> new StoreNotFoundException("Store not found with name " + request.nameStore()));
 
-        SalesObjective salesObjectiveToSave = SalesObjective.builder()
+        salesObjectiveRepository.findActiveObjectiveByStoreId(storeSaved.getIdStore(), SalesObjectiveStatus.ACTIVO)
+                .ifPresent(oldObjective -> {
+                    oldObjective.setStatus(SalesObjectiveStatus.FINALIZADO);
+                    salesObjectiveRepository.save(oldObjective);
+                });
+
+        SalesObjective newObjective = SalesObjective.builder()
                 .store(storeSaved)
+                .status(SalesObjectiveStatus.ACTIVO)
                 .targetAmount(request.targetAmount())
                 .periodType(request.periodType())
                 .startDate(request.startDate())
                 .endDate(request.endDate())
                 .build();
 
-        SalesObjective salesObjectiveSaved = salesObjectiveRepository.save(salesObjectiveToSave);
+        SalesObjective salesObjectiveSaved = salesObjectiveRepository.save(newObjective);
 
         return SalesObjectiveDto.builder()
                 .idObjective(salesObjectiveSaved.getIdObjective())

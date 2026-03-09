@@ -2,9 +2,12 @@ package com.upc.oss.monitoreo.entities;
 
 import jakarta.persistence.*;
 import lombok.*;
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import java.time.LocalDate;
 
+@EntityListeners(AuditingEntityListener.class)
 @Builder
 @Entity
 @Table(name = "notificacion")
@@ -31,7 +34,8 @@ public class Notification {
     @Column(name = "mensaje")
     private String message;
 
-    @Column(name = "fecha_generada", updatable = false)
+    @CreatedDate
+    @Column(name = "fecha_generada", updatable = false, nullable = false)
     private LocalDate generatedAt;
 
     @Column(name = "leida")

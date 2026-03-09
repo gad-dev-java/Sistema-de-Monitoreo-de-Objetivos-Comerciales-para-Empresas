@@ -2,11 +2,14 @@ package com.upc.oss.monitoreo.entities;
 
 import jakarta.persistence.*;
 import lombok.*;
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 
+@EntityListeners(AuditingEntityListener.class)
 @Builder
 @Entity
 @Table(name = "venta")
@@ -24,7 +27,8 @@ public class Sale {
     @JoinColumn(name = "id_local", nullable = false)
     private Store store;
 
-    @Column(name = "fecha_venta", nullable = false)
+    @CreatedDate
+    @Column(name = "fecha_venta", nullable = false, updatable = false)
     private LocalDate saleDate;
 
     @Column(name = "monto", nullable = false)
@@ -33,6 +37,7 @@ public class Sale {
     @Column(name = "descripcion")
     private String description;
 
+    @CreatedDate
     @Column(name = "fecha_registro_sistema")
     private LocalDateTime registeredAt;
 }
