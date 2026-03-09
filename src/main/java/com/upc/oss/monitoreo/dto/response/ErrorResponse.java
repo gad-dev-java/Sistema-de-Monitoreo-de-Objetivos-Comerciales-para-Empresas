@@ -6,11 +6,12 @@ import lombok.Builder;
 import java.time.LocalDateTime;
 
 @Builder
-public record DataResponse<T>(
+public record ErrorResponse(
         int status,
         String message,
-        T data,
+        Object errors,
         @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
-        LocalDateTime timestamp
+        LocalDateTime timestamp,
+        String path
 ) {
 }
