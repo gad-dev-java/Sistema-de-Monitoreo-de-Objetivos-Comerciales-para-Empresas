@@ -5,14 +5,13 @@ import com.upc.oss.monitoreo.dto.request.CreateSalesObjectiveRequest;
 import com.upc.oss.monitoreo.entities.SalesObjective;
 import com.upc.oss.monitoreo.entities.Store;
 import com.upc.oss.monitoreo.enums.SalesObjectiveStatus;
+import com.upc.oss.monitoreo.exception.InvalidDateRangeException;
 import com.upc.oss.monitoreo.exception.StoreNotFoundException;
 import com.upc.oss.monitoreo.repository.SalesObjectiveRepository;
 import com.upc.oss.monitoreo.repository.StoreRepository;
 import com.upc.oss.monitoreo.service.SalesObjectiveService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-
-import java.time.DateTimeException;
 
 @Service
 @RequiredArgsConstructor
@@ -23,7 +22,7 @@ public class SalesObjectiveServiceImpl implements SalesObjectiveService {
     @Override
     public SalesObjectiveDto recordMonthlyGoalAndAssociateWithStore(CreateSalesObjectiveRequest request) {
         if (request.endDate().isBefore(request.startDate())) {
-            throw new DateTimeException("Date range not valid");
+            throw new InvalidDateRangeException("End date must be after start date");
         }
 
         Store storeSaved = storeRepository.findByNameIgnoreCase(request.nameStore())

@@ -1,7 +1,6 @@
 package com.upc.oss.monitoreo.controller;
 
 import com.upc.oss.monitoreo.dto.SalesObjectiveDto;
-import com.upc.oss.monitoreo.dto.StoreDto;
 import com.upc.oss.monitoreo.dto.request.CreateSalesObjectiveRequest;
 import com.upc.oss.monitoreo.dto.response.DataResponse;
 import com.upc.oss.monitoreo.service.SalesObjectiveService;

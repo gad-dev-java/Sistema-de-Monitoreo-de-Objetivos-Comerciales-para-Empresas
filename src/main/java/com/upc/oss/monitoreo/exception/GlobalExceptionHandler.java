@@ -81,6 +81,12 @@ public class GlobalExceptionHandler {
         return buildErrorResponse(request, HttpStatus.UNAUTHORIZED, "Invalid email or password", null);
     }
 
+    @ExceptionHandler(InvalidDateRangeException.class)
+    public ResponseEntity<ErrorResponse> handleInvalidDateRangeException(
+            InvalidDateRangeException ex, HttpServletRequest request) {
+        return buildErrorResponse(request, HttpStatus.BAD_REQUEST, ex.getMessage(), null);
+    }
+
     private ResponseEntity<ErrorResponse> buildErrorResponse(HttpServletRequest request,
                                                              HttpStatus status,
                                                              String message,
