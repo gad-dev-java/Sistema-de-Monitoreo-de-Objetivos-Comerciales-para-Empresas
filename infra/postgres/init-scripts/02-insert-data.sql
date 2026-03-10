@@ -34,8 +34,8 @@ VALUES (1, 'AVANCE', 'INFO', 'El local ha alcanzado el 50% de su meta mensual.')
        (4, 'ALERTA', 'CRITICAL', 'Desviación crítica del objetivo: PC menor al 20%.');
 
 INSERT INTO usuario (nombre, email, password, rol, id_empresa)
-VALUES ('Carlos Pérez', 'cperez@empresa1.com', '$2a$10$r.82mY..hash_ejemplo_1', 'ADMIN', 1),
-       ('Ana García', 'agarcia@empresa1.com', '$2a$10$r.82mY..hash_ejemplo_2', 'SUPERVISOR', 1),
-       ('Roberto Gómez', 'rgomez@empresa2.com', '$2a$10$r.82mY..hash_ejemplo_3', 'ADMIN', 2),
-       ('Lucía Torres', 'ltorres@empresa3.com', '$2a$10$r.82mY..hash_ejemplo_4', 'SUPERVISOR', 3),
-       ('Miguel Jara', 'mjara@empresa4.com', '$2a$10$r.82mY..hash_ejemplo_5', 'ADMIN', 4);
+VALUES ('Carlos Pérez', 'cperez@empresa1.com', '$2a$10$K6cphovuyyeTUdeDKfMjteXaSKq7mQQ41RZnhKouvKfmwujsfzEqy', 'ADMIN', 1),
+       ('Ana García', 'agarcia@empresa1.com', '$2a$10$K6cphovuyyeTUdeDKfMjteXaSKq7mQQ41RZnhKouvKfmwujsfzEqy', 'SUPERVISOR', 1),
+       ('Roberto Gómez', 'rgomez@empresa2.com', '$2a$10$K6cphovuyyeTUdeDKfMjteXaSKq7mQQ41RZnhKouvKfmwujsfzEqy', 'ADMIN', 2),
+       ('Lucía Torres', 'ltorres@empresa3.com', '$2a$10$K6cphovuyyeTUdeDKfMjteXaSKq7mQQ41RZnhKouvKfmwujsfzEqy', 'SUPERVISOR', 3),
+       ('Miguel Jara', 'mjara@empresa4.com', '$2a$10$K6cphovuyyeTUdeDKfMjteXaSKq7mQQ41RZnhKouvKfmwujsfzEqy', 'ADMIN', 4);

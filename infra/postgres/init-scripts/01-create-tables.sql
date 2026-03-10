@@ -82,7 +82,7 @@ CREATE TABLE usuario
     nombre     VARCHAR(100)        NOT NULL,
     email      VARCHAR(150) UNIQUE NOT NULL,
     password   VARCHAR(255)        NOT NULL,                       -- Espacio para Hash BCrypt
-    rol        VARCHAR(20) CHECK (rol IN ('ADMIN', 'SUPERVISOR')), --
+    rol        VARCHAR(20) CHECK (rol IN ('ADMIN', 'SUPERVISOR', 'GERENTE')), --
     id_empresa BIGINT              NOT NULL,
     CONSTRAINT fk_usuario_empresa
         FOREIGN KEY (id_empresa)

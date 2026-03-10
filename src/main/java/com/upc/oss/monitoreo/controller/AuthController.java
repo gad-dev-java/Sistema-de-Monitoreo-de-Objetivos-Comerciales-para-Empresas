@@ -1,6 +1,7 @@
 package com.upc.oss.monitoreo.controller;
 
 import com.upc.oss.monitoreo.dto.request.AuthRequest;
+import com.upc.oss.monitoreo.dto.response.AuthResponse;
 import com.upc.oss.monitoreo.dto.response.DataResponse;
 import com.upc.oss.monitoreo.jwt.JwtUtil;
 import lombok.RequiredArgsConstructor;
@@ -27,18 +28,19 @@ public class AuthController {
     private final JwtUtil jwtUtil;
 
     @PostMapping("/login")
-    public ResponseEntity<DataResponse<String>> login(@RequestBody AuthRequest request) {
+    public ResponseEntity<DataResponse<AuthResponse>> login(@RequestBody AuthRequest request) {
         authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(request.email(), request.password())
         );
 
         final UserDetails userDetails = userDetailsService.loadUserByUsername(request.email());
         final String jwt = jwtUtil.generateToken(userDetails);
+        AuthResponse authResponse = new AuthResponse(jwt);
 
-        return ResponseEntity.ok(DataResponse.<String>builder()
+        return ResponseEntity.ok(DataResponse.<AuthResponse>builder()
                 .status(HttpStatus.OK.value())
                 .message("Login successful")
-                .data(jwt)
+                .data(authResponse)
                 .timestamp(LocalDateTime.now())
                 .build());
     }
