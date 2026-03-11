@@ -8,23 +8,31 @@ import com.upc.oss.monitoreo.service.CompanyService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.net.URI;
 import java.time.LocalDateTime;
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/companies")
 @RequiredArgsConstructor
 public class CompanyController {
     private final CompanyService companyService;
+
+    @GetMapping
+    public ResponseEntity<DataResponse<List<CompanyDto>>> getCompanies() {
+        List<CompanyDto> companies = companyService.getCompanies();
+        DataResponse<List<CompanyDto>> response = DataResponse.<List<CompanyDto>>builder()
+                .status(HttpStatus.OK.value())
+                .message("Company fetched successfully")
+                .data(companies)
+                .timestamp(LocalDateTime.now())
+                .build();
+
+        return ResponseEntity.ok(response);
+    }
 
     @PostMapping
     public ResponseEntity<DataResponse<CompanyDto>> createCompany(@RequestBody CreateCompanyRequest request) {

@@ -13,6 +13,8 @@ import com.upc.oss.monitoreo.service.StoreService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 @RequiredArgsConstructor
 public class StoreServiceImpl implements StoreService {
@@ -69,5 +71,21 @@ public class StoreServiceImpl implements StoreService {
                 .companyRuc(storeSaved.getCompany().getRuc())
                 .companyStatus(storeSaved.getCompany().getStatus())
                 .build();
+    }
+
+    @Override
+    public List<StoreDto> getStoresByCompanyId(Long idCompany) {
+        return storeRepository.findByCompanyIdCompany(idCompany)
+                .stream()
+                .map(store -> StoreDto.builder()
+                        .idStore(store.getIdStore())
+                        .name(store.getName())
+                        .address(store.getAddress())
+                        .city(store.getCity())
+                        .companyName(store.getCompany().getName())
+                        .companyRuc(store.getCompany().getRuc())
+                        .companyStatus(store.getCompany().getStatus())
+                        .build())
+                .toList();
     }
 }

@@ -7,6 +7,7 @@ import org.springframework.stereotype.Repository;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.util.List;
 
 @Repository
 public interface SaleRepository extends JpaRepository<Sale, Long> {
@@ -17,4 +18,6 @@ public interface SaleRepository extends JpaRepository<Sale, Long> {
             AND s.saleDate BETWEEN :startDate AND :currentDate
             """)
     BigDecimal sumSalesByStoreAndPeriod(Long storeId, LocalDate startDate, LocalDate currentDate);
+
+    List<Sale> findByStoreIdStore(Long idStore);
 }

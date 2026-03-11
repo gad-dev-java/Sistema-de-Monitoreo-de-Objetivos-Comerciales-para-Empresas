@@ -7,20 +7,30 @@ import com.upc.oss.monitoreo.service.SaleService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.net.URI;
 import java.time.LocalDateTime;
+import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/sales")
 public class SaleController {
     private final SaleService saleService;
+
+    @GetMapping("/store/{storeId}")
+    public ResponseEntity<DataResponse<List<SaleDto>>>  findAllByStoreId(@PathVariable Long storeId) {
+        List<SaleDto> saleDtos = saleService.getSalesByStoreId(storeId);
+        DataResponse<List<SaleDto>> response = DataResponse.<List<SaleDto>>builder()
+                .status(HttpStatus.OK.value())
+                .message("Sales fetching successfully")
+                .data(saleDtos)
+                .timestamp(LocalDateTime.now())
+                .build();
+        return ResponseEntity.ok(response);
+    }
 
     @PostMapping
     public ResponseEntity<DataResponse<SaleDto>> createSale(@RequestBody CreateSaleRequest request) {

@@ -13,12 +13,25 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.net.URI;
 import java.time.LocalDateTime;
+import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/stores")
 public class StoreController {
     private final StoreService storeService;
+
+    @GetMapping("/company/{idCompany}")
+    public ResponseEntity<DataResponse<List<StoreDto>>> getStoresByCompanyId(@PathVariable Long idCompany) {
+        List<StoreDto> stores = storeService.getStoresByCompanyId(idCompany);
+        DataResponse<List<StoreDto>> response = DataResponse.<List<StoreDto>>builder()
+                .status(HttpStatus.OK.value())
+                .message("stores fetching successfully")
+                .data(stores)
+                .timestamp(LocalDateTime.now())
+                .build();
+        return ResponseEntity.ok(response);
+    }
 
     @PostMapping
     public ResponseEntity<DataResponse<StoreDto>> createStore(@RequestBody CreateStoreRequest request) {

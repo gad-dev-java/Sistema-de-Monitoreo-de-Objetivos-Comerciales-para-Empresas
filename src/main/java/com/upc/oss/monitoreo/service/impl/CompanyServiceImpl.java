@@ -11,6 +11,8 @@ import com.upc.oss.monitoreo.service.CompanyService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 @RequiredArgsConstructor
 public class CompanyServiceImpl implements CompanyService {
@@ -63,5 +65,19 @@ public class CompanyServiceImpl implements CompanyService {
                 .orElseThrow(()-> new CompanyNotFoundException("Company with id " + idCompany + " not found"));
         companySaved.setStatus(false);
         companyRepository.save(companySaved);
+    }
+
+    @Override
+    public List<CompanyDto> getCompanies() {
+        return companyRepository.findAll()
+                .stream()
+                .map(companyList -> CompanyDto.builder()
+                        .idCompany(companyList.getIdCompany())
+                        .name(companyList.getName())
+                        .ruc(companyList.getRuc())
+                        .status(companyList.getStatus())
+                        .createdAt(companyList.getCreatedAt())
+                        .build())
+                .toList();
     }
 }

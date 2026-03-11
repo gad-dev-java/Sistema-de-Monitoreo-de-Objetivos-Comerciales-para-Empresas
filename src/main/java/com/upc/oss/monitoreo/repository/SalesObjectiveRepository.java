@@ -6,6 +6,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
 import java.util.Optional;
 
 @Repository
@@ -17,4 +18,6 @@ public interface SalesObjectiveRepository extends JpaRepository<SalesObjective, 
             AND so.status = :status
             """)
     Optional<SalesObjective> findActiveObjectiveByStoreId(Long storeId, SalesObjectiveStatus status);
+
+    List<SalesObjective> findByStoreIdStore(Long idStore);
 }

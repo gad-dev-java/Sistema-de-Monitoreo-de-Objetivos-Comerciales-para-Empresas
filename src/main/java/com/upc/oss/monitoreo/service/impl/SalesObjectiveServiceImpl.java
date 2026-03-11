@@ -13,6 +13,8 @@ import com.upc.oss.monitoreo.service.SalesObjectiveService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 @RequiredArgsConstructor
 public class SalesObjectiveServiceImpl implements SalesObjectiveService {
@@ -54,5 +56,21 @@ public class SalesObjectiveServiceImpl implements SalesObjectiveService {
                 .startDate(salesObjectiveSaved.getStartDate())
                 .endDate(salesObjectiveSaved.getEndDate())
                 .build();
+    }
+
+    @Override
+    public List<SalesObjectiveDto> getByStoreId(Long idStore) {
+        return salesObjectiveRepository.findByStoreIdStore(idStore)
+                .stream()
+                .map(objective -> SalesObjectiveDto.builder()
+                        .idObjective(objective.getIdObjective())
+                        .nameStore(objective.getStore().getName())
+                        .statusStore(objective.getStore().getStatus())
+                        .targetAmount(objective.getTargetAmount())
+                        .periodType(objective.getPeriodType())
+                        .startDate(objective.getStartDate())
+                        .endDate(objective.getEndDate())
+                        .build())
+                .toList();
     }
 }

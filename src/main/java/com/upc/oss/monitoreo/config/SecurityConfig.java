@@ -34,11 +34,11 @@ public class SecurityConfig {
                 .cors(Customizer.withDefaults())
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/api/auth/**", "/api/users/**").permitAll()
+                        .requestMatchers("/api/auth/**").permitAll()
                         .requestMatchers("/api/companies/**", "/api/stores", "/api/users/**").hasRole("ADMIN")
-                        .requestMatchers("/api/sales-objectives/**", "/api/notifications/**",
-                                "/api/monitoring/**", "/api/reports/**").hasRole("GERENTE")
-                        .requestMatchers("/api/monitoring/**", "/api/sales/**").hasAnyRole("SUPERVISOR")
+                        .requestMatchers("/api/sales-objectives/**", "/api/notifications/**", "/api/reports/**").hasRole("GERENTE")
+                        .requestMatchers("/api/sales/**").hasRole("SUPERVISOR")
+                        .requestMatchers("/api/monitoring/**").hasAnyRole("SUPERVISOR", "GERENTE")
                         .anyRequest().authenticated()
                 )
                 .exceptionHandling(ex -> ex

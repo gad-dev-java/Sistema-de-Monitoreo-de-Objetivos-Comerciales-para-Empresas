@@ -1,10 +1,14 @@
 package com.upc.oss.monitoreo.jwt;
 
+import com.upc.oss.monitoreo.entities.User;
+import com.upc.oss.monitoreo.repository.UserRepository;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.security.Keys;
+import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Component;
 
 import java.security.Key;
@@ -14,7 +18,9 @@ import java.util.HashMap;
 import java.util.Map;
 
 @Component
+@RequiredArgsConstructor
 public class JwtUtil {
+    private final UserRepository userRepository;
     private static final String SECRET_KEY = "cWhld3FqZXdxamllYndxaWJzamlmYmFzamZhYnJxd29yd3FvcndibnFqc25mamFzZmJqc2FvZm5zYWpvZm5hc29qZm5zYW9hZGFzamRvYXNqZG9hcw==";
 
     private Key getSigningKey() {
@@ -23,10 +29,15 @@ public class JwtUtil {
     }
 
     public String generateToken(UserDetails userDetails) {
+        User currentUSer = getUserByEmail(userDetails.getUsername());
+
         Map<String, Object> claims = new HashMap<>();
         claims.put("roles", userDetails.getAuthorities().stream()
                 .map(GrantedAuthority::getAuthority)
                 .toList());
+        claims.put("name", currentUSer.getName());
+        claims.put("email", currentUSer.getEmail());
+        claims.put("idCompany", currentUSer.getCompany().getIdCompany());
 
         return Jwts.builder()
                 .setClaims(claims)
@@ -59,5 +70,10 @@ public class JwtUtil {
     public Boolean validateToken(String token, UserDetails userDetails) {
         final String username = extractUsername(token);
         return (username.equals(userDetails.getUsername()) && !isTokenExpired(token));
+    }
+
+    public User getUserByEmail(String email) {
+        return userRepository.findByEmail(email)
+                .orElseThrow(() -> new UsernameNotFoundException("User not found with email: " + email));
     }
 }

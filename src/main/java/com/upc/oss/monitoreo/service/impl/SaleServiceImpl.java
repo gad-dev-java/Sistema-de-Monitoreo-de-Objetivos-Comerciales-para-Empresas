@@ -12,6 +12,8 @@ import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 @RequiredArgsConstructor
 public class SaleServiceImpl implements SaleService {
@@ -20,8 +22,8 @@ public class SaleServiceImpl implements SaleService {
 
     @Override
     public SaleDto registerSale(CreateSaleRequest request) {
-        Store storeFound =  storeRepository.findByNameIgnoreCase(request.storeName())
-                .orElseThrow(()-> new StoreNotFoundException("Store not found with name " + request.storeName()));
+        Store storeFound = storeRepository.findByNameIgnoreCase(request.storeName())
+                .orElseThrow(() -> new StoreNotFoundException("Store not found with name " + request.storeName()));
 
         Sale saleToSave = Sale.builder()
                 .store(storeFound)
@@ -39,5 +41,20 @@ public class SaleServiceImpl implements SaleService {
                 .amount(saleSaved.getAmount())
                 .description(saleSaved.getDescription())
                 .build();
+    }
+
+    @Override
+    public List<SaleDto> getSalesByStoreId(Long storeId) {
+        return saleRepository.findByStoreIdStore(storeId)
+                .stream()
+                .map(sale -> SaleDto.builder()
+                        .idSale(sale.getIdSale())
+                        .storeName(sale.getStore().getName())
+                        .storeStatus(sale.getStore().getStatus())
+                        .saleDate(sale.getSaleDate())
+                        .amount(sale.getAmount())
+                        .description(sale.getDescription())
+                        .build())
+                .toList();
     }
 }
