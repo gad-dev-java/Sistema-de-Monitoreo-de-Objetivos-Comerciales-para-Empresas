@@ -12,4 +12,5 @@ public interface StoreRepository extends JpaRepository<Store, Long> {
     Optional<Store> findByNameIgnoreCase(String name);
     List<Store> findByCompanyIdCompany(Long idCompany);
     List<Store> findByStatusTrue();
+    List<Store> findByCompanyIdCompanyAndStatusTrue(Long companyId);
 }

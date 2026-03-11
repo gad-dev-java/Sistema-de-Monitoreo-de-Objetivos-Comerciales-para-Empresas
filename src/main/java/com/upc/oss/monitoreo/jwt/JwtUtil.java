@@ -2,6 +2,7 @@ package com.upc.oss.monitoreo.jwt;
 
 import com.upc.oss.monitoreo.entities.User;
 import com.upc.oss.monitoreo.repository.UserRepository;
+import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.security.Keys;
@@ -49,12 +50,15 @@ public class JwtUtil {
     }
 
     public String extractUsername(String token) {
+        return extractAllClaims(token).getSubject();
+    }
+
+    private Claims extractAllClaims(String token) {
         return Jwts.parserBuilder()
                 .setSigningKey(getSigningKey())
                 .build()
                 .parseClaimsJws(token)
-                .getBody()
-                .getSubject();
+                .getBody();
     }
 
     private Boolean isTokenExpired(String token) {
@@ -75,5 +79,10 @@ public class JwtUtil {
     public User getUserByEmail(String email) {
         return userRepository.findByEmail(email)
                 .orElseThrow(() -> new UsernameNotFoundException("User not found with email: " + email));
+    }
+
+    public Long extractCompanyId(String token) {
+        Claims claims = extractAllClaims(token);
+        return claims.get("idCompany", Long.class);
     }
 }

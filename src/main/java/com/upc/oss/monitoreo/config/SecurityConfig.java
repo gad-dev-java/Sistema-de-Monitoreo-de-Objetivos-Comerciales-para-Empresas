@@ -35,10 +35,19 @@ public class SecurityConfig {
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/api/auth/**").permitAll()
-                        .requestMatchers("/api/companies/**", "/api/stores", "/api/users/**").hasRole("ADMIN")
-                        .requestMatchers("/api/sales-objectives/**", "/api/notifications/**", "/api/reports/**").hasRole("GERENTE")
-                        .requestMatchers("/api/sales/**").hasRole("SUPERVISOR")
-                        .requestMatchers("/api/monitoring/**").hasAnyRole("SUPERVISOR", "GERENTE")
+                        // Solo ADMIN
+                        .requestMatchers("/api/companies/**").hasRole("ADMIN")
+
+                        // ADMIN + GERENTE
+                        .requestMatchers("/api/users/**").hasAnyRole("ADMIN", "GERENTE")
+                        .requestMatchers("/api/sales-objectives/**").hasAnyRole("ADMIN", "GERENTE")
+                        .requestMatchers("/api/reports/**").hasAnyRole("ADMIN", "GERENTE")
+
+                        // TODOS — necesarios para el dashboard
+                        .requestMatchers("/api/stores/**").hasAnyRole("ADMIN", "GERENTE", "SUPERVISOR")
+                        .requestMatchers("/api/monitoring/**").hasAnyRole("ADMIN", "GERENTE", "SUPERVISOR")
+                        .requestMatchers("/api/notifications/**").hasAnyRole("ADMIN", "GERENTE", "SUPERVISOR")
+                        .requestMatchers("/api/sales/**").hasAnyRole("ADMIN", "GERENTE", "SUPERVISOR")
                         .anyRequest().authenticated()
                 )
                 .exceptionHandling(ex -> ex
