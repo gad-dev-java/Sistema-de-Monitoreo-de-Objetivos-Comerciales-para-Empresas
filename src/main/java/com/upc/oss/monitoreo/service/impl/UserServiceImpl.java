@@ -28,7 +28,7 @@ public class UserServiceImpl implements UserService {
                 .orElseThrow(() -> new CompanyNotFoundException("Company not found with name " + request.companyName()));
 
         String role = request.role().toUpperCase();
-        if (!role.equals("ADMIN") && !role.equals("SUPERVISOR")) {
+        if (!role.equals("ADMIN") && !role.equals("SUPERVISOR") && !role.equals("GERENTE")) {
             throw new RoleInvalidException("Invalid role. Must be ADMIN or SUPERVISOR");
         }
 

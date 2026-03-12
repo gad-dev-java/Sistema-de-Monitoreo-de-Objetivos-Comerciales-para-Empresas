@@ -4,15 +4,20 @@ import com.upc.oss.monitoreo.dto.StoreDto;
 import com.upc.oss.monitoreo.dto.request.CreateStoreRequest;
 import com.upc.oss.monitoreo.dto.request.UpdateStoreRequest;
 import com.upc.oss.monitoreo.entities.Company;
+import com.upc.oss.monitoreo.entities.SalesObjective;
 import com.upc.oss.monitoreo.entities.Store;
+import com.upc.oss.monitoreo.enums.SalesObjectiveStatus;
 import com.upc.oss.monitoreo.exception.CompanyNotFoundException;
 import com.upc.oss.monitoreo.exception.StoreNotFoundException;
 import com.upc.oss.monitoreo.repository.CompanyRepository;
+import com.upc.oss.monitoreo.repository.SalesObjectiveRepository;
 import com.upc.oss.monitoreo.repository.StoreRepository;
 import com.upc.oss.monitoreo.service.StoreService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.util.List;
 
 @Service
@@ -20,6 +25,7 @@ import java.util.List;
 public class StoreServiceImpl implements StoreService {
     private final StoreRepository storeRepository;
     private final CompanyRepository companyRepository;
+    private final SalesObjectiveRepository salesObjectiveRepository;
 
     @Override
     public StoreDto createStoreAndAssociateWithCompany(CreateStoreRequest request) {
@@ -35,6 +41,7 @@ public class StoreServiceImpl implements StoreService {
                 .build();
 
         Store storeSaved = storeRepository.save(storeToSave);
+        setDefaultSaleObjective(storeSaved);
 
         return StoreDto.builder()
                 .idStore(storeSaved.getIdStore())
@@ -87,5 +94,18 @@ public class StoreServiceImpl implements StoreService {
                         .companyStatus(store.getCompany().getStatus())
                         .build())
                 .toList();
+    }
+
+    private void setDefaultSaleObjective(Store storeSaved) {
+        SalesObjective newObjective = SalesObjective.builder()
+                .store(storeSaved)
+                .status(SalesObjectiveStatus.ACTIVO)
+                .targetAmount(BigDecimal.valueOf(1000.00))
+                .periodType("MENSUAL")
+                .startDate(LocalDate.now())
+                .endDate(LocalDate.now().plusMonths(1))
+                .build();
+
+        salesObjectiveRepository.save(newObjective);
     }
 }
