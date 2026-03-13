@@ -10,8 +10,6 @@ import com.upc.oss.monitoreo.repository.CompanyRepository;
 import com.upc.oss.monitoreo.repository.UserRepository;
 import com.upc.oss.monitoreo.service.UserService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 

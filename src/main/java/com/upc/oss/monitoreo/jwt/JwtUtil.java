@@ -7,6 +7,7 @@ import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.security.Keys;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -22,10 +23,12 @@ import java.util.Map;
 @RequiredArgsConstructor
 public class JwtUtil {
     private final UserRepository userRepository;
-    private static final String SECRET_KEY = "cWhld3FqZXdxamllYndxaWJzamlmYmFzamZhYnJxd29yd3FvcndibnFqc25mamFzZmJqc2FvZm5zYWpvZm5hc29qZm5zYW9hZGFzamRvYXNqZG9hcw==";
+
+    @Value("${jwt.secret}")
+    private String secretKey;
 
     private Key getSigningKey() {
-        byte[] keyBytes = Base64.getDecoder().decode(SECRET_KEY);
+        byte[] keyBytes = Base64.getDecoder().decode(secretKey);
         return Keys.hmacShaKeyFor(keyBytes);
     }
 

@@ -4,6 +4,7 @@ import com.upc.oss.monitoreo.dto.SaleDto;
 import com.upc.oss.monitoreo.dto.request.CreateSaleRequest;
 import com.upc.oss.monitoreo.dto.response.DataResponse;
 import com.upc.oss.monitoreo.service.SaleService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -33,7 +34,7 @@ public class SaleController {
     }
 
     @PostMapping
-    public ResponseEntity<DataResponse<SaleDto>> createSale(@RequestBody CreateSaleRequest request) {
+    public ResponseEntity<DataResponse<SaleDto>> createSale(@RequestBody @Valid CreateSaleRequest request) {
         SaleDto saleDto = saleService.registerSale(request);
 
         DataResponse<SaleDto> response = DataResponse.<SaleDto>builder()

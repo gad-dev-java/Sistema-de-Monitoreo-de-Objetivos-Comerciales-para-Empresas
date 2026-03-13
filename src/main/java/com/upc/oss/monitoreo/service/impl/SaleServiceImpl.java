@@ -8,7 +8,6 @@ import com.upc.oss.monitoreo.exception.StoreNotFoundException;
 import com.upc.oss.monitoreo.repository.SaleRepository;
 import com.upc.oss.monitoreo.repository.StoreRepository;
 import com.upc.oss.monitoreo.service.SaleService;
-import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 

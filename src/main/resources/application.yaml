@@ -14,3 +14,4 @@ spring:
       hibernate:
         format_sql: true
         highlight_sql: true
+jwt.secret: cWhld3FqZXdxamllYndxaWJzamlmYmFzamZhYnJxd29yd3FvcndibnFqc25mamFzZmJqc2FvZm5zYWpvZm5hc29qZm5zYW9hZGFzamRvYXNqZG9hcw==

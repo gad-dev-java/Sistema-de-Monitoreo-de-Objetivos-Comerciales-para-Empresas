@@ -5,6 +5,7 @@ import com.upc.oss.monitoreo.dto.request.CreateStoreRequest;
 import com.upc.oss.monitoreo.dto.request.UpdateStoreRequest;
 import com.upc.oss.monitoreo.dto.response.DataResponse;
 import com.upc.oss.monitoreo.service.StoreService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -34,7 +35,7 @@ public class StoreController {
     }
 
     @PostMapping
-    public ResponseEntity<DataResponse<StoreDto>> createStore(@RequestBody CreateStoreRequest request) {
+    public ResponseEntity<DataResponse<StoreDto>> createStore(@RequestBody @Valid CreateStoreRequest request) {
         StoreDto storeDto = storeService.createStoreAndAssociateWithCompany(request);
 
         DataResponse<StoreDto> response = DataResponse.<StoreDto>builder()
@@ -54,7 +55,7 @@ public class StoreController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<DataResponse<StoreDto>> updateStore(@PathVariable Long id, @RequestBody UpdateStoreRequest request) {
+    public ResponseEntity<DataResponse<StoreDto>> updateStore(@PathVariable Long id, @RequestBody @Valid UpdateStoreRequest request) {
         StoreDto storeDto = storeService.updateLocal(request, id);
 
         DataResponse<StoreDto> response = DataResponse.<StoreDto>builder()

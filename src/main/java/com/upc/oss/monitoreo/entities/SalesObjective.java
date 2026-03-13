@@ -38,5 +38,5 @@ public class SalesObjective {
 
     @Column(name = "estado")
     @Enumerated(EnumType.STRING)
-    private SalesObjectiveStatus status = SalesObjectiveStatus.ACTIVO;
+    private SalesObjectiveStatus status;
 }

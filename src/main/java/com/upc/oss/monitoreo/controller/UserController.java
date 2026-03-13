@@ -4,6 +4,7 @@ import com.upc.oss.monitoreo.dto.UserDto;
 import com.upc.oss.monitoreo.dto.request.CreateUserRequest;
 import com.upc.oss.monitoreo.dto.response.DataResponse;
 import com.upc.oss.monitoreo.service.UserService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -23,7 +24,7 @@ public class UserController {
     private final UserService userService;
 
     @PostMapping
-    public ResponseEntity<DataResponse<UserDto>> createUser(@RequestBody CreateUserRequest request) {
+    public ResponseEntity<DataResponse<UserDto>> createUser(@RequestBody @Valid CreateUserRequest request) {
         UserDto userDto = userService.createUser(request);
 
         DataResponse<UserDto> response = DataResponse.<UserDto>builder()

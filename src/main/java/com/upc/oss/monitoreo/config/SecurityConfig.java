@@ -27,6 +27,9 @@ import java.time.LocalDateTime;
 public class SecurityConfig {
     private final JwtRequestFilter jwtRequestFilter;
     private final ObjectMapper objectMapper;
+    private static final String ROLE_ADMIN = "ADMIN";
+    private static final String ROLE_GERENTE = "GERENTE";
+    private static final String ROLE_SUPERVISOR = "SUPERVISOR";
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) {
@@ -36,18 +39,18 @@ public class SecurityConfig {
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/api/auth/**").permitAll()
                         // Solo ADMIN
-                        .requestMatchers("/api/companies/**").hasRole("ADMIN")
+                        .requestMatchers("/api/companies/**").hasRole(ROLE_ADMIN)
 
                         // ADMIN + GERENTE
-                        .requestMatchers("/api/users/**").hasAnyRole("ADMIN", "GERENTE")
-                        .requestMatchers("/api/sales-objectives/**").hasAnyRole("ADMIN", "GERENTE")
-                        .requestMatchers("/api/reports/**").hasAnyRole("ADMIN", "GERENTE")
+                        .requestMatchers("/api/users/**").hasAnyRole(ROLE_ADMIN, ROLE_GERENTE)
+                        .requestMatchers("/api/sales-objectives/**").hasAnyRole(ROLE_ADMIN, ROLE_GERENTE)
+                        .requestMatchers("/api/reports/**").hasAnyRole(ROLE_ADMIN, ROLE_GERENTE)
 
                         // TODOS — necesarios para el dashboard
-                        .requestMatchers("/api/stores/**").hasAnyRole("ADMIN", "GERENTE", "SUPERVISOR")
-                        .requestMatchers("/api/monitoring/**").hasAnyRole("ADMIN", "GERENTE", "SUPERVISOR")
-                        .requestMatchers("/api/notifications/**").hasAnyRole("ADMIN", "GERENTE", "SUPERVISOR")
-                        .requestMatchers("/api/sales/**").hasAnyRole("ADMIN", "GERENTE", "SUPERVISOR")
+                        .requestMatchers("/api/stores/**").hasAnyRole(ROLE_ADMIN, ROLE_GERENTE, ROLE_SUPERVISOR)
+                        .requestMatchers("/api/monitoring/**").hasAnyRole(ROLE_ADMIN, ROLE_GERENTE, ROLE_SUPERVISOR)
+                        .requestMatchers("/api/notifications/**").hasAnyRole(ROLE_ADMIN, ROLE_GERENTE, ROLE_SUPERVISOR)
+                        .requestMatchers("/api/sales/**").hasAnyRole(ROLE_ADMIN, ROLE_GERENTE, ROLE_SUPERVISOR)
                         .anyRequest().authenticated()
                 )
                 .exceptionHandling(ex -> ex

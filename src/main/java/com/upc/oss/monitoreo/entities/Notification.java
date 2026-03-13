@@ -39,5 +39,5 @@ public class Notification {
     private LocalDate generatedAt;
 
     @Column(name = "leida")
-    private Boolean isRead = false;
+    private Boolean isRead;
 }

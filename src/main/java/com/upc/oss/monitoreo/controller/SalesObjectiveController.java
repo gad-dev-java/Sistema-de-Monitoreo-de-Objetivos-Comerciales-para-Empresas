@@ -4,6 +4,7 @@ import com.upc.oss.monitoreo.dto.SalesObjectiveDto;
 import com.upc.oss.monitoreo.dto.request.CreateSalesObjectiveRequest;
 import com.upc.oss.monitoreo.dto.response.DataResponse;
 import com.upc.oss.monitoreo.service.SalesObjectiveService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -34,7 +35,7 @@ public class SalesObjectiveController {
     }
 
     @PostMapping
-    public ResponseEntity<DataResponse<SalesObjectiveDto>> createSalesObjective(@RequestBody CreateSalesObjectiveRequest request) {
+    public ResponseEntity<DataResponse<SalesObjectiveDto>> createSalesObjective(@RequestBody @Valid CreateSalesObjectiveRequest request) {
         SalesObjectiveDto salesObjectiveDto = salesObjectiveService.recordMonthlyGoalAndAssociateWithStore(request);
 
         DataResponse<SalesObjectiveDto> response = DataResponse.<SalesObjectiveDto>builder()

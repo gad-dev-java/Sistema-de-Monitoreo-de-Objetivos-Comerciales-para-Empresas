@@ -5,6 +5,7 @@ import com.upc.oss.monitoreo.dto.request.CreateCompanyRequest;
 import com.upc.oss.monitoreo.dto.request.UpdateCompanyRequest;
 import com.upc.oss.monitoreo.dto.response.DataResponse;
 import com.upc.oss.monitoreo.service.CompanyService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -35,7 +36,7 @@ public class CompanyController {
     }
 
     @PostMapping
-    public ResponseEntity<DataResponse<CompanyDto>> createCompany(@RequestBody CreateCompanyRequest request) {
+    public ResponseEntity<DataResponse<CompanyDto>> createCompany(@RequestBody @Valid CreateCompanyRequest request) {
         CompanyDto savedCompany = companyService.createCompany(request);
 
         DataResponse<CompanyDto> response = DataResponse.<CompanyDto>builder()
@@ -55,7 +56,7 @@ public class CompanyController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<DataResponse<CompanyDto>> updateCompany(@PathVariable Long id, @RequestBody UpdateCompanyRequest request) {
+    public ResponseEntity<DataResponse<CompanyDto>> updateCompany(@PathVariable Long id, @RequestBody @Valid UpdateCompanyRequest request) {
         CompanyDto companyDto = companyService.updateCompany(request, id);
         DataResponse<CompanyDto> response = DataResponse.<CompanyDto>builder()
                 .status(HttpStatus.OK.value())
