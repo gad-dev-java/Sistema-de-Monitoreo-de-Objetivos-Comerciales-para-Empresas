@@ -23,7 +23,7 @@ public class AlertProcessor {
     private final NotificationRepository notificationRepository;
     private final StoreRepository storeRepository;
 
-    @Scheduled(fixedRate = 21_600_000)
+    @Scheduled(fixedRate = 20_000)
     public void processStoreAlerts() {
         log.info("Iniciando procesamiento de alertas - {}", LocalDateTime.now());
         List<Store> activesStores = storeRepository.findByStatusTrue();
@@ -32,7 +32,7 @@ public class AlertProcessor {
 
         for (Store store : activesStores) {
             if (store.getLastAlertGenerated() != null &&
-                    ChronoUnit.SECONDS.between(store.getLastAlertGenerated(), now) < 21_600) {
+                    ChronoUnit.SECONDS.between(store.getLastAlertGenerated(), now) < 20) {
                 continue;
             }
 
